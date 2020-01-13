@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Calculadora.Lib
 {
-    class Expression
+    public class Expression
     {
         public string Text;
         public Literal Value { get; internal set; }
@@ -18,12 +18,15 @@ namespace Calculadora.Lib
         }
 
 
-        internal virtual Literal Resolve()
+        public virtual Literal Resolve()
         {
             Expression operation = null;
 
             Regex reg;
             Match match;
+
+            //TODOFD - somewhere in here you have to work the negatives
+            //TODOFD - Also the percentages
 
             #region Soma
             reg = new Regex(@"(.+)(mais)(.+)");
@@ -35,8 +38,7 @@ namespace Calculadora.Lib
             #endregion
 
             #region Subtracção
-            //TODOFD - wont work on cases like: dois menos menos dois
-            reg = new Regex(@"(.+)(menos)(.+)");
+            reg = new Regex(@"(.+?)(menos)(.+)");
             match = reg.Match(Text);
             if (match.Success)
             {
@@ -59,6 +61,25 @@ namespace Calculadora.Lib
             if (match.Success)
             {
                 operation = new Multiply(match.Groups[1].Value, match.Groups[3].Value);
+            }
+            #endregion
+
+            #region Negativo
+            reg = new Regex(@"(.*)(menos)(.+)");
+            match = reg.Match(Text);
+            if (match.Success)
+            {
+                operation = new Negativo(match.Groups[3].Value);
+            }
+            #endregion
+
+            #region e
+            //In portuguese the word 'e' is used to form numbers, works as an addition
+            reg = new Regex(@"(.+)(e)(.+)");
+            match = reg.Match(Text);
+            if (match.Success)
+            {
+                operation = new Add(match.Groups[1].Value, match.Groups[3].Value);
             }
             #endregion
 

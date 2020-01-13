@@ -11,25 +11,25 @@ namespace Calculadora.Lib.Operations
         Expression RightValue;
 
         public Subtract(string leftExpression, string rightExpression)
-            : base(leftExpression + "+" + rightExpression)
+            : base(leftExpression + "-" + rightExpression)
         {
             LeftValue = new Expression(leftExpression);
             RightValue = new Expression(rightExpression);
         }
 
-        internal override Literal Resolve()
+        public override Literal Resolve()
         {
             Literal left = LeftValue.Resolve();
             Literal right = RightValue.Resolve();
 
-            Value = SubtractLiterals(left, right);
+            SubtractLiterals(left, right);
 
             return Value;
         }
 
-        private Literal SubtractLiterals(Literal left, Literal right)
+        private void SubtractLiterals(Literal left, Literal right)
         {
-            throw new NotImplementedException();
+            Value.NumericValue = left.NumericValue - right.NumericValue;
         }
     }
 }

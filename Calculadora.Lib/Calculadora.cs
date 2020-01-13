@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Calculadora.Lib
 {
-    class Calculadora
+    public class Calculadora
     {
         public string Resolve(string text) 
         {

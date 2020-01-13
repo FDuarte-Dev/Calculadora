@@ -11,25 +11,25 @@ namespace Calculadora.Lib.Operations
         Expression RightValue;
 
         public Divide(string leftExpression, string rightExpression)
-            : base(leftExpression + "+" + rightExpression)
+            : base(leftExpression + ":" + rightExpression)
         {
             LeftValue = new Expression(leftExpression);
             RightValue = new Expression(rightExpression);
         }
 
-        internal override Literal Resolve()
+        public override Literal Resolve()
         {
             Literal left = LeftValue.Resolve();
             Literal right = RightValue.Resolve();
 
-            Value = DivideLiterals(left, right);
+            DivideLiterals(left, right);
 
             return Value;
         }
 
-        private Literal DivideLiterals(Literal left, Literal right)
+        private void DivideLiterals(Literal left, Literal right)
         {
-            throw new NotImplementedException();
+            Value.NumericValue = left.NumericValue / right.NumericValue;
         }
     }
 }

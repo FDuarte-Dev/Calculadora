@@ -11,25 +11,25 @@ namespace Calculadora.Lib.Operations
         Expression RightValue;
 
         public Multiply(string leftExpression, string rightExpression)
-            : base(leftExpression + "+" + rightExpression)
+            : base(leftExpression + "x" + rightExpression)
         {
             LeftValue = new Expression(leftExpression);
             RightValue = new Expression(rightExpression);
         }
 
-        internal override Literal Resolve()
+        public override Literal Resolve()
         {
             Literal left = LeftValue.Resolve();
             Literal right = RightValue.Resolve();
 
-            Value = MultiplyLiterals(left, right);
+            MultiplyLiterals(left, right);
 
             return Value;
         }
 
-        private Literal MultiplyLiterals(Literal left, Literal right)
+        private void MultiplyLiterals(Literal left, Literal right)
         {
-            throw new NotImplementedException();
+            Value.NumericValue = left.NumericValue * right.NumericValue;
         }
     }
 }
