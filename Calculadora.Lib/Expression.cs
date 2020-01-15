@@ -9,16 +9,15 @@ namespace Calculadora.Lib
     public class Expression
     {
         public string Text;
-        public Literal Value { get; internal set; }
+        public double Value { get; internal set; }
 
         public Expression(string text)
         {
             this.Text = text;
-            this.Value = new Literal("zero");
         }
 
 
-        public virtual Literal Resolve()
+        public virtual double Resolve()
         {
             Expression operation = null;
 
@@ -27,61 +26,79 @@ namespace Calculadora.Lib
 
             //TODOFD - somewhere in here you have to work the negatives
             //TODOFD - Also the percentages
+            //TODOFD - UGLY 
 
-            #region Soma
-            reg = new Regex(@"(.+)(mais)(.+)");
-            match = reg.Match(Text);
-            if (match.Success) 
-            {
-                operation = new Add(match.Groups[1].Value, match.Groups[3].Value);
-            }
-            #endregion
-
-            #region Subtracção
-            reg = new Regex(@"(.+?)(menos)(.+)");
-            match = reg.Match(Text);
-            if (match.Success)
-            {
-                operation = new Subtract(match.Groups[1].Value, match.Groups[3].Value);
-            }
-            #endregion
-
-            #region Divisão
-            reg = new Regex(@"(.+)(a dividir por)(.+)");
-            match = reg.Match(Text);
-            if (match.Success)
-            {
-                operation = new Divide(match.Groups[1].Value, match.Groups[3].Value);
-            }
-            #endregion
-
-            #region Multiplicação
-            reg = new Regex(@"(.+)(vezes)(.+)");
-            match = reg.Match(Text);
-            if (match.Success)
-            {
-                operation = new Multiply(match.Groups[1].Value, match.Groups[3].Value);
-            }
-            #endregion
-
-            #region Negativo
-            reg = new Regex(@"(.*)(menos)(.+)");
-            match = reg.Match(Text);
-            if (match.Success)
-            {
-                operation = new Negativo(match.Groups[3].Value);
-            }
-            #endregion
-
-            #region e
-            //In portuguese the word 'e' is used to form numbers, works as an addition
-            reg = new Regex(@"(.+)(e)(.+)");
+            reg = new Regex(@"(.+)( mais )(.+)");
             match = reg.Match(Text);
             if (match.Success)
             {
                 operation = new Add(match.Groups[1].Value, match.Groups[3].Value);
             }
-            #endregion
+            else 
+            {
+                //(?(?=( menos menos ))((.+?)( menos )(.+))|((.+)( menos )(.+)))
+                reg = new Regex(@"(.+)( menos )(.+)");
+                match = reg.Match(Text);
+                if (match.Success)
+                {
+                    operation = new Subtract(match.Groups[1].Value, match.Groups[3].Value);
+                }
+                else 
+                {
+                    reg = new Regex(@"(.+)( a dividir por )(.+)");
+                    match = reg.Match(Text);
+                    if (match.Success)
+                    {
+                        operation = new Divide(match.Groups[1].Value, match.Groups[3].Value);
+                    }
+                    else 
+                    {
+                        reg = new Regex(@"(.+)( vezes )(.+)");
+                        match = reg.Match(Text);
+                        if (match.Success)
+                        {
+                            operation = new Multiply(match.Groups[1].Value, match.Groups[3].Value);
+                        }
+                        else 
+                        {
+                            reg = new Regex(@"(.*)(menos )(.+)");
+                            match = reg.Match(Text);
+                            if (match.Success)
+                            {
+                                operation = new Negativo(match.Groups[3].Value);
+                            }
+                            else 
+                            {
+                                reg = new Regex(@"(.+)( ponto )(.+)");
+                                match = reg.Match(Text);
+                                if (match.Success)
+                                {
+                                    operation = new DecimalLiteral(match.Groups[1].Value, match.Groups[3].Value);
+                                }
+                                else
+                                {
+                                    //In portuguese the word 'e' is used to form numbers, works as an addition
+                                    reg = new Regex(@"(.+)( e )(.+)");
+                                    match = reg.Match(Text);
+                                    if (match.Success)
+                                    {
+                                        operation = new Add(match.Groups[1].Value, match.Groups[3].Value);
+                                    }
+                                    else
+                                    {
+                                        reg = new Regex(@"(.+)");
+                                        match = reg.Match(Text);
+                                        if (match.Success)
+                                        {
+                                            operation = new Literal(match.Groups[1].Value);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             Value = operation.Resolve();
 

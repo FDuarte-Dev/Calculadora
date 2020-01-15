@@ -15,16 +15,13 @@ namespace Calculadora.Lib.Operations
             Exp = new Literal(leftExpression);
         }
 
-        public override Literal Resolve()
+        public override double Resolve()
         {
-            NegLiteral(Exp);
+            double exp = Exp.Resolve();
 
-            return Exp;
-        }
+            Value = exp * -1;
 
-        private void NegLiteral(Literal val)
-        {
-            Exp.NumericValue = val.NumericValue * -1;
+            return Value;
         }
     }
 }

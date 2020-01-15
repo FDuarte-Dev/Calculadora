@@ -17,19 +17,14 @@ namespace Calculadora.Lib.Operations
             RightValue = new Expression(rightExpression);
         }
 
-        public override Literal Resolve() 
+        public override double Resolve() 
         {
-            Literal left = LeftValue.Resolve();
-            Literal right = RightValue.Resolve();
+            double left = LeftValue.Resolve();
+            double right = RightValue.Resolve();
 
-            AddLiterals(left.Value, right.Value);
+            Value = left + right;
             
             return Value;
-        }
-
-        private void AddLiterals(Literal left, Literal right)
-        {
-            Value.NumericValue = left.NumericValue + right.NumericValue;
         }
     }
 }
