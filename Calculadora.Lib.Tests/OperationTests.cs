@@ -291,15 +291,116 @@ namespace Calculadora.Lib.Tests
         [TestMethod]
         public void NegTest2()
         {
+            Expression exp = new Expression("menos dois ponto dois");
+
+            double result = exp.Resolve();
+
+            Assert.AreEqual(-2.2, result);
+        }
+
+        [TestMethod]
+        public void NegTest3()
+        {
+            Expression exp = new Expression("menos zero");
+
+            double result = exp.Resolve();
+
+            Assert.AreEqual(0, result);
+        }
+        #endregion
+
+        #region Percent
+        [TestMethod]
+        public void PercentTest1()
+        {
+            Expression exp = new Expression("cinquenta por cento de dez");
+
+            double result = exp.Resolve();
+
+            Assert.AreEqual(5, result);
+        }
+
+        [TestMethod]
+        public void PercentTest2()
+        {
+            Expression exp = new Expression("cem por cento de dez");
+
+            double result = exp.Resolve();
+
+            Assert.AreEqual(10, result);
+        }
+
+        [TestMethod]
+        public void PercentTest3()
+        {
+            Expression exp = new Expression("cento e cinquenta por cento de dez");
+
+            double result = exp.Resolve();
+
+            Assert.AreEqual(15, result);
+        }
+
+        [TestMethod]
+        public void PercentTest4()
+        {
+            Expression exp = new Expression("duzentos por cento de zero vírgula cinco");
+
+            double result = exp.Resolve();
+
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void PercentTest5()
+        {
+            Expression exp = new Expression("vinte e sete por cento de trinta");
+
+            double result = exp.Resolve();
+
+            Assert.AreEqual(8.1, result);
+        }
+        #endregion
+
+        #region Various Operations
+        [TestMethod]
+        public void VariousOpsTest1()
+        {
             Expression exp = new Expression("dois menos menos dois");
 
             double result = exp.Resolve();
 
             Assert.AreEqual(4, result);
         }
-        #endregion
 
-        #region Various Operations
+        [TestMethod]
+        public void VariousOpsTest2()
+        {
+            Expression exp = new Expression("um mais dois vezes três");
+
+            double result = exp.Resolve();
+
+            Assert.AreEqual(7, result);
+        }
+
+        [TestMethod]
+        public void VariousOpsTest3()
+        {
+            Expression exp = new Expression("dois menos quatro vezes menos um");
+
+            double result = exp.Resolve();
+
+            Assert.AreEqual(6, result);
+        }
+
+        [TestMethod]
+        public void VariousOpsTest4()
+        {
+            Expression exp = new Expression("duzentos e trinta mais quarenta e três menos vinte e cinco por cento de oito");
+
+            double result = exp.Resolve();
+
+            Assert.AreEqual(271, result);
+        }
         #endregion
     }
 }

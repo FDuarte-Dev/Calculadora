@@ -150,7 +150,7 @@ namespace Calculadora.Lib
                         Value = (int)Value == 0 ? 1000000000000 : (int)Value * 1000000000000;
                         break;
                     default:
-                        throw new NotSupportedException("Keyword not recognised");
+                        throw new NotSupportedException("Keyword not recognised: " + match.Value);
                 }
             }
         }

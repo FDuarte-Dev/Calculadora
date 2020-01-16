@@ -24,8 +24,6 @@ namespace Calculadora.Lib
             Regex reg;
             Match match;
 
-            //TODOFD - somewhere in here you have to work the negatives
-            //TODOFD - Also the percentages
             //TODOFD - UGLY 
 
             reg = new Regex(@"(.+)( mais )(.+)");
@@ -36,10 +34,17 @@ namespace Calculadora.Lib
             }
             else 
             {
-                //(?(?=( menos menos ))((.+?)( menos )(.+))|((.+)( menos )(.+)))
-                reg = new Regex(@"(.+)( menos )(.+)");
+                reg = Text.Contains("menos menos") ||
+                      Text.Contains("mais menos") ||
+                      Text.Contains("a dividir por menos") ||
+                      Text.Contains("vezes menos") ?
+                    new Regex(@"(.+?)( menos )(.+)") :
+                    new Regex(@"(.+)( menos )(.+)");
                 match = reg.Match(Text);
-                if (match.Success)
+                if (match.Success &&
+                    !match.Groups[1].Value.EndsWith("mais") &&
+                    !match.Groups[1].Value.EndsWith("a dividir por") &&
+                    !match.Groups[1].Value.EndsWith("vezes"))
                 {
                     operation = new Subtract(match.Groups[1].Value, match.Groups[3].Value);
                 }
@@ -61,36 +66,45 @@ namespace Calculadora.Lib
                         }
                         else 
                         {
-                            reg = new Regex(@"(.*)(menos )(.+)");
+                            reg = new Regex(@"(.+)( por cento de )(.+)");
                             match = reg.Match(Text);
                             if (match.Success)
                             {
-                                operation = new Negativo(match.Groups[3].Value);
+                                operation = new Percent(match.Groups[1].Value, match.Groups[3].Value);
                             }
-                            else 
+                            else
                             {
-                                reg = new Regex(@"(.+)( ponto )(.+)");
+                                reg = new Regex(@"(.*?)(menos )(.+)");
                                 match = reg.Match(Text);
                                 if (match.Success)
                                 {
-                                    operation = new DecimalLiteral(match.Groups[1].Value, match.Groups[3].Value);
+                                    operation = new Negativo(match.Groups[3].Value);
                                 }
                                 else
                                 {
-                                    //In portuguese the word 'e' is used to form numbers, works as an addition
-                                    reg = new Regex(@"(.+)( e )(.+)");
+                                    reg = new Regex(@"(.+)( ponto )(.+)");
                                     match = reg.Match(Text);
                                     if (match.Success)
                                     {
-                                        operation = new Add(match.Groups[1].Value, match.Groups[3].Value);
+                                        operation = new DecimalLiteral(match.Groups[1].Value, match.Groups[3].Value);
                                     }
                                     else
                                     {
-                                        reg = new Regex(@"(.+)");
+                                        //In portuguese the word 'e' is used to form numbers, works as an addition
+                                        reg = new Regex(@"(.+)( e )(.+)");
                                         match = reg.Match(Text);
                                         if (match.Success)
                                         {
-                                            operation = new Literal(match.Groups[1].Value);
+                                            operation = new Add(match.Groups[1].Value, match.Groups[3].Value);
+                                        }
+                                        else
+                                        {
+                                            reg = new Regex(@"(.+)");
+                                            match = reg.Match(Text);
+                                            if (match.Success)
+                                            {
+                                                operation = new Literal(match.Groups[1].Value);
+                                            }
                                         }
                                     }
                                 }

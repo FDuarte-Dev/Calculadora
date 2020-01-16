@@ -8,17 +8,4 @@ Para a lógica, o ponto de entrada será primeramente composto por um tradutor, 
 
 	Provavelmente tem de ser feito cm um visitor.
 
-Para a aplicação será utilizado o Xamarim (TBD), receberá por input de voz uma expressão, e irá por dar o reorno o resultado da expressão.
-
-
-duzentos e trinta mais quarenta e três menos vinte e cinco
-
-
-
-Teoria de números:
-quatro mil seiscentos e trinta e dois
-mil e onze
-dois mil e vinte
-dois vírgula cinco
-cinco ponto dois cinco três
-seis milhões e dois mil
+Para a aplicação será utilizado o Xamarim (TBD), receberá por input de voz uma expressão, e irá por dar o retorno o resultado da expressão.
