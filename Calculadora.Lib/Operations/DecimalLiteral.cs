@@ -11,23 +11,28 @@ namespace Calculadora.Lib.Operations
         Expression RightValue;
 
         public DecimalLiteral(string leftExpression, string rightExpression)
-            : base(leftExpression + "ponto" + rightExpression)
+            : base(leftExpression + "vírgula" + rightExpression)
         {
             LeftValue = new Expression(leftExpression);
             RightValue = new Expression(rightExpression);
         }
 
-        public override double Resolve()
+        public override string ToString()
         {
-            double left = LeftValue.Resolve();
-            double right = RightValue.Resolve();
+            return LeftValue.ToString() + "," + RightValue.ToString();
+        }
 
-            Value = Createdouble((int)left, (int)right);
+        public override decimal Resolve()
+        {
+            decimal left = LeftValue.Resolve();
+            decimal right = RightValue.Resolve();
+
+            Value = Createdecimal((int)left, (int)right);
 
             return Value;
         }
 
-        private double Createdouble(int leftValue, int rightValue)
+        private decimal Createdecimal(int leftValue, int rightValue)
         {
             int dummy;
             while (rightValue > 0)

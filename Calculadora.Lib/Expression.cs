@@ -8,19 +8,22 @@ namespace Calculadora.Lib
 {
     public class Expression
     {
+        private Expression operation;
         public string Text;
-        public double Value { get; internal set; }
+        public decimal Value { get; internal set; }
 
         public Expression(string text)
         {
             this.Text = text;
         }
 
-
-        public virtual double Resolve()
+        public override string ToString()
         {
-            Expression operation = null;
+            return operation.ToString();
+        }
 
+        public virtual decimal Resolve()
+        {
             Regex reg;
             Match match;
 
@@ -82,7 +85,7 @@ namespace Calculadora.Lib
                                 }
                                 else
                                 {
-                                    reg = new Regex(@"(.+)( ponto )(.+)");
+                                    reg = new Regex(@"(.+)( ponto | vírgula )(.+)");
                                     match = reg.Match(Text);
                                     if (match.Success)
                                     {

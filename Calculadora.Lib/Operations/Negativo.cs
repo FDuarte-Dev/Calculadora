@@ -15,11 +15,16 @@ namespace Calculadora.Lib.Operations
             Exp = new Literal(leftExpression);
         }
 
-        public override double Resolve()
+        public override string ToString()
         {
-            double exp = Exp.Resolve();
+            return "-" + Exp.ToString();
+        }
 
-            Value = exp * -1;
+        public override decimal Resolve()
+        {
+            decimal exp = Exp.Resolve();
+
+            Value = decimal.Negate(exp);
 
             return Value;
         }

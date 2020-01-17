@@ -17,18 +17,23 @@ namespace Calculadora.Lib.Operations
             RightValue = new Expression(rightExpression);
         }
 
-        public override double Resolve()
+        public override string ToString()
         {
-            double left = LeftValue.Resolve();
-            double right = RightValue.Resolve();
+            return LeftValue.ToString() + ":" + RightValue.ToString();
+        }
+
+        public override decimal Resolve()
+        {
+            decimal left = LeftValue.Resolve();
+            decimal right = RightValue.Resolve();
 
             if (right == 0)
             {
-                Value = double.NaN;
+                Value = decimal.MaxValue;
             }
             else
             {
-                Value = left / right;
+                Value = decimal.Divide(left, right);
             }
 
             return Value;

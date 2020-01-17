@@ -165,7 +165,7 @@ namespace Calculadora.Lib
             KeywordMatch(matches);
         }
 
-        private void Computedouble(string[] text)
+        private void Computedecimal(string[] text)
         {
             Value = 0;
 
@@ -184,11 +184,11 @@ namespace Calculadora.Lib
             leftValue = (int)Value;
             Value = 0;
 
-            Value = Createdouble(leftValue, rightValue);
+            Value = Createdecimal(leftValue, rightValue);
 
         }
 
-        private double Createdouble(int leftValue, int rightValue)
+        private decimal Createdecimal(int leftValue, int rightValue)
         {
             int dummy;
             while(rightValue > 0) 
@@ -211,7 +211,7 @@ namespace Calculadora.Lib
         #endregion
 
         #region Public Methods
-        public override double Resolve() 
+        public override decimal Resolve() 
         {
             ComputeValue();
             return Value;
@@ -222,7 +222,7 @@ namespace Calculadora.Lib
             if (Text.Contains("ponto") ||
                 Text.Contains("vírgula"))
             {
-                Computedouble(Text.Split(new string[] { "ponto", "vírgula"}, 
+                Computedecimal(Text.Split(new string[] { "ponto", "vírgula"}, 
                                          StringSplitOptions.RemoveEmptyEntries ));
             }
             else

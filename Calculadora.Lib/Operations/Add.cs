@@ -17,14 +17,20 @@ namespace Calculadora.Lib.Operations
             RightValue = new Expression(rightExpression);
         }
 
-        public override double Resolve() 
+        public override string ToString()
         {
-            double left = LeftValue.Resolve();
-            double right = RightValue.Resolve();
+            return LeftValue.ToString() + "+" + RightValue.ToString();
+        }
 
-            Value = left + right;
+        public override decimal Resolve() 
+        {
+            decimal left = LeftValue.Resolve();
+            decimal right = RightValue.Resolve();
+
+            Value = decimal.Add(left, right);
             
             return Value;
         }
+
     }
 }

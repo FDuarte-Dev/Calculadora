@@ -13,7 +13,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("um mais um");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(2, result);
         }
@@ -23,7 +23,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("um mais um mais um");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(3, result);
         }
@@ -33,7 +33,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("um mais um mais um mais trinta");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(33, result);
         }
@@ -43,9 +43,9 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("um mais um ponto um");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
-            Assert.AreEqual(2.1, result);
+            Assert.AreEqual((decimal)2.1, result);
         }
 
         [TestMethod]
@@ -53,9 +53,9 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("um ponto um mais um ponto um");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
-            Assert.AreEqual(2.2, result);
+            Assert.AreEqual((decimal)2.2, result);
         }
         #endregion
 
@@ -65,7 +65,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("um menos um");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(0, result);
         }
@@ -75,7 +75,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("três menos um menos dois");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(0, result);
         }
@@ -85,7 +85,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("trinta menos dez menos dez menos um");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(9, result);
         }
@@ -95,9 +95,9 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("um ponto um menos um");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
-            Assert.AreEqual(0.1, result);
+            Assert.AreEqual((decimal)0.1, result);
         }
 
         [TestMethod]
@@ -105,7 +105,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("dois ponto um menos um ponto um");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(1, result);
         }
@@ -117,7 +117,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("um vezes um");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(1, result);
         }
@@ -127,7 +127,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("um vezes zero");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(0, result);
         }
@@ -137,7 +137,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("um vezes trinta");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(30, result);
         }
@@ -147,7 +147,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("três vezes trinta");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(90, result);
         }
@@ -157,7 +157,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("zero vezes zero");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(0, result);
         }
@@ -167,9 +167,9 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("dois vezes um ponto um");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
-            Assert.AreEqual(2.2, result);
+            Assert.AreEqual((decimal)2.2, result);
         }
 
         [TestMethod]
@@ -177,9 +177,9 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("um ponto um vezes um ponto um");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
-            Assert.AreEqual(1.21, result);
+            Assert.AreEqual((decimal)1.21, result);
         }
         #endregion
 
@@ -189,7 +189,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("dois a dividir por um");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(2, result);
         }
@@ -199,7 +199,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("vinte a dividir por cinco");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(4, result);
         }
@@ -209,9 +209,9 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("vinte a dividir por zero");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
-            Assert.AreEqual(double.NaN, result);
+            Assert.AreEqual(decimal.MaxValue, result);
         }
 
         [TestMethod]
@@ -219,19 +219,19 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("um a dividir por dois");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
-            Assert.AreEqual(0.5, result);
+            Assert.AreEqual((decimal)0.5, result);
         }
 
         [TestMethod]
         public void DivTest5()
         {
-            Expression exp = new Expression("um a dividir por zero");
+            Expression exp = new Expression("um ponto um a dividir por zero");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
-            Assert.AreEqual(double.NaN, result);
+            Assert.AreEqual(decimal.MaxValue, result);
         }
 
         [TestMethod]
@@ -239,7 +239,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("zero ponto cinco a dividir por zero ponto cinco");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(1, result);
         }
@@ -251,7 +251,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("vinte e cinco");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(25, result);
         }
@@ -261,9 +261,9 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("vinte e cinco ponto dois");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
-            Assert.AreEqual(25.2, result);
+            Assert.AreEqual((decimal)25.2, result);
         }
 
         [TestMethod]
@@ -271,9 +271,9 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("vinte e cinco ponto vinte e cinco");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
-            Assert.AreEqual(25.25, result);
+            Assert.AreEqual((decimal)25.25, result);
         }
         #endregion
 
@@ -283,7 +283,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("menos dois");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(-2, result);
         }
@@ -293,9 +293,9 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("menos dois ponto dois");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
-            Assert.AreEqual(-2.2, result);
+            Assert.AreEqual((decimal)-2.2, result);
         }
 
         [TestMethod]
@@ -303,7 +303,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("menos zero");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(0, result);
         }
@@ -315,7 +315,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("cinquenta por cento de dez");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(5, result);
         }
@@ -325,7 +325,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("cem por cento de dez");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(10, result);
         }
@@ -335,7 +335,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("cento e cinquenta por cento de dez");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(15, result);
         }
@@ -345,7 +345,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("duzentos por cento de zero vírgula cinco");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(1, result);
         }
@@ -355,9 +355,9 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("vinte e sete por cento de trinta");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
-            Assert.AreEqual(8.1, result);
+            Assert.AreEqual((decimal)8.1, result);
         }
         #endregion
 
@@ -367,7 +367,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("dois menos menos dois");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(4, result);
         }
@@ -377,7 +377,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("um mais dois vezes três");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(7, result);
         }
@@ -387,7 +387,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("dois menos quatro vezes menos um");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(6, result);
         }
@@ -397,7 +397,7 @@ namespace Calculadora.Lib.Tests
         {
             Expression exp = new Expression("duzentos e trinta mais quarenta e três menos vinte e cinco por cento de oito");
 
-            double result = exp.Resolve();
+            decimal result = exp.Resolve();
 
             Assert.AreEqual(271, result);
         }
