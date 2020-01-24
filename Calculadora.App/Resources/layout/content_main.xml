@@ -1,0 +1,19 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_main">
+
+    <Button
+        android:clickable="true"
+        android:layout_width="100.0dp"
+        android:layout_height="100.0dp"
+        android:layout_centerInParent="true"
+        android:onClick="@android:string/yes"
+        />
+
+
+</RelativeLayout>
