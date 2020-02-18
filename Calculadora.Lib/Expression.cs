@@ -77,36 +77,54 @@ namespace Calculadora.Lib
                             }
                             else
                             {
-                                reg = new Regex(@"(.*?)(menos )(.+)");
+                                reg = new Regex(@"(.+)( elevado a )(.+)");
                                 match = reg.Match(Text);
-                                if (match.Success)
+                                if (match.Success) 
                                 {
-                                    operation = new Negativo(match.Groups[3].Value);
+                                    operation = new Potencia(match.Groups[1].Value, match.Groups[3].Value);
                                 }
                                 else
                                 {
-                                    reg = new Regex(@"(.+)( ponto | vírgula )(.+)");
+                                    reg = new Regex(@"(raiz quadrada de )(.+)");
                                     match = reg.Match(Text);
                                     if (match.Success)
                                     {
-                                        operation = new DecimalLiteral(match.Groups[1].Value, match.Groups[3].Value);
+                                        operation = new Raiz(match.Groups[2].Value);
                                     }
                                     else
                                     {
-                                        //In portuguese the word 'e' is used to form numbers, works as an addition
-                                        reg = new Regex(@"(.+)( e )(.+)");
+                                        reg = new Regex(@"(.*?)(menos )(.+)");
                                         match = reg.Match(Text);
                                         if (match.Success)
                                         {
-                                            operation = new Add(match.Groups[1].Value, match.Groups[3].Value);
+                                            operation = new Negativo(match.Groups[3].Value);
                                         }
                                         else
                                         {
-                                            reg = new Regex(@"(.+)");
+                                            reg = new Regex(@"(.+)( ponto | vírgula )(.+)");
                                             match = reg.Match(Text);
                                             if (match.Success)
                                             {
-                                                operation = new Literal(match.Groups[1].Value);
+                                                operation = new DecimalLiteral(match.Groups[1].Value, match.Groups[3].Value);
+                                            }
+                                            else
+                                            {
+                                                //In portuguese the word 'e' is used to form numbers, works as an addition
+                                                reg = new Regex(@"(.+)( e )(.+)");
+                                                match = reg.Match(Text);
+                                                if (match.Success)
+                                                {
+                                                    operation = new Add(match.Groups[1].Value, match.Groups[3].Value);
+                                                }
+                                                else
+                                                {
+                                                    reg = new Regex(@"(.+)");
+                                                    match = reg.Match(Text);
+                                                    if (match.Success)
+                                                    {
+                                                        operation = new Literal(match.Groups[1].Value);
+                                                    }
+                                                }
                                             }
                                         }
                                     }

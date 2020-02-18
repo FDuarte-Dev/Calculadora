@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Calculadora.Lib
+﻿namespace Calculadora.Lib
 {
     public class Calculadora
     {
-        public static string Resolve(string text) 
+        public static string Init(string text) 
         {
+            if (string.IsNullOrEmpty(text))
+                return text;
+
             Expression expression = TextToExpression(text);
 
             expression.Resolve();
@@ -23,7 +22,7 @@ namespace Calculadora.Lib
 
         public static string ExpressionToText(Expression expression)
         {
-            return expression.ToString();
+            return expression.ToString() + " = " + expression.Value.ToString();
         }
     }
 }

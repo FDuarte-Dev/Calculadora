@@ -12,9 +12,9 @@ namespace Calculadora.Lib.Tests
         {
             string expression = "um";
 
-            string result = Calculadora.Resolve(expression);
+            string result = Calculadora.Init(expression);
 
-            Assert.AreEqual("1", result);
+            Assert.AreEqual("1 = 1", result);
         }
 
         [TestMethod]
@@ -22,9 +22,9 @@ namespace Calculadora.Lib.Tests
         {
             string expression = "um mais um";
 
-            string result = Calculadora.Resolve(expression);
+            string result = Calculadora.Init(expression);
 
-            Assert.AreEqual("1+1", result);
+            Assert.AreEqual("1+1 = 2", result);
         }
 
         [TestMethod]
@@ -32,9 +32,9 @@ namespace Calculadora.Lib.Tests
         {
             string expression = "dois mais três menos vinte";
 
-            string result = Calculadora.Resolve(expression);
+            string result = Calculadora.Init(expression);
 
-            Assert.AreEqual("2+3-20", result);
+            Assert.AreEqual("2+3-20 = -15", result);
         }
 
         [TestMethod]
@@ -42,9 +42,9 @@ namespace Calculadora.Lib.Tests
         {
             string expression = "dois vírgula um";
 
-            string result = Calculadora.Resolve(expression);
+            string result = Calculadora.Init(expression);
 
-            Assert.AreEqual("2,1", result);
+            Assert.AreEqual("2,1 = 2,1", result);
         }
 
         [TestMethod]
@@ -52,9 +52,9 @@ namespace Calculadora.Lib.Tests
         {
             string expression = "cinquenta por cento de cem";
 
-            string result = Calculadora.Resolve(expression);
+            string result = Calculadora.Init(expression);
 
-            Assert.AreEqual("50%100", result);
+            Assert.AreEqual("50%100 = 50,0", result);
         }
 
         [TestMethod]
@@ -71,9 +71,9 @@ namespace Calculadora.Lib.Tests
                                 "menos um " +
                                 "mais um";
 
-            string result = Calculadora.Resolve(expression);
+            string result = Calculadora.Init(expression);
 
-            Assert.AreEqual("-1+1-1+1-1+1-1+1-1+1", result);
+            Assert.AreEqual("-1+1-1+1-1+1-1+1-1+1 = 0", result);
         }
     }
 }
