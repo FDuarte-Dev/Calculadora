@@ -7,6 +7,7 @@ using Android.Runtime;
 using Android.Speech;
 using Android.Speech.Tts;
 using Android.Support.Design.Widget;
+using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
@@ -19,7 +20,6 @@ namespace Calculadora.App
     {
         View view;
 
-        bool isRecording;
         const int VOICE = 10;
 
         string text;
@@ -59,7 +59,7 @@ namespace Calculadora.App
             view = (View)sender;
             if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.RecordAudio) != Android.Content.PM.Permission.Granted)
             {
-                //TODOFD - Grant permission
+                ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.RecordAudio }, 12345);
             }
             GetTextFromVoice();
         }
@@ -82,33 +82,36 @@ namespace Calculadora.App
 
         private void GetTextFromVoice()
         {
-            isRecording = false;
-
             string rec = Android.Content.PM.PackageManager.FeatureMicrophone;
             if (rec != "android.hardware.microphone")
             {
-                text = string.Empty;
+                text = "Não encontrei um microfone.";
+
+                //Playback the sound
+                PlayVoiceFromText(view);
             }
             else
             {
-                isRecording = true;
-                if (isRecording)
-                {
-                    Intent voiceIntent = new Intent(RecognizerIntent.ActionRecognizeSpeech);
-                    voiceIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
+                Intent voiceIntent = InitializeIntent();
 
-                    voiceIntent.PutExtra(RecognizerIntent.ExtraPrompt, "Qual a operação?");
-
-                    voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 1500);
-                    voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 1500);
-                    voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 1500);
-                    voiceIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 1);
-
-                    voiceIntent.PutExtra(RecognizerIntent.ExtraResults, Java.Util.Locale.Default);
-
-                    StartActivityForResult(voiceIntent, VOICE);
-                }
+                StartActivityForResult(voiceIntent, VOICE);
             }
+        }
+
+        private static Intent InitializeIntent()
+        {
+            Intent voiceIntent = new Intent(RecognizerIntent.ActionRecognizeSpeech);
+            voiceIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
+
+            voiceIntent.PutExtra(RecognizerIntent.ExtraPrompt, "Qual a operação?");
+
+            voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 1500);
+            voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 1500);
+            voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 1500);
+            voiceIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 1);
+
+            voiceIntent.PutExtra(RecognizerIntent.ExtraResults, Java.Util.Locale.Default);
+            return voiceIntent;
         }
 
         protected override void OnActivityResult(int requestCode, Result resultVal, Intent data) 
@@ -145,11 +148,12 @@ namespace Calculadora.App
                     //Something happened, replay generic message
                     text = "Nenhuma operação pedida, tente outra vez.";
                 }
-                
+
                 //Playback the sound
                 PlayVoiceFromText(view);
             }
             base.OnActivityResult(requestCode, resultVal, data);
+
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
