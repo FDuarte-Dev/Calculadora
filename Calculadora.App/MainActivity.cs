@@ -5,26 +5,26 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Speech;
-using Android.Speech.Tts;
 using Android.Support.Design.Widget;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
+using Xamarin.Essentials;
+using System.Threading.Tasks;
 
 namespace Calculadora.App
 {
     [Activity(Label = "Calculadora", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
-    public class MainActivity : AppCompatActivity, TextToSpeech.IOnInitListener
+    public class MainActivity : AppCompatActivity
     {
         View view;
 
         const int VOICE = 10;
 
-        string text;
+        string Text;
 
-        TextToSpeech tts;
         Java.Util.Locale lang;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -57,6 +57,7 @@ namespace Calculadora.App
         private void FabOnClick(object sender, EventArgs eventArgs)
         {
             view = (View)sender;
+
             if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.RecordAudio) != Android.Content.PM.Permission.Granted)
             {
                 ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.RecordAudio }, 12345);
@@ -64,19 +65,18 @@ namespace Calculadora.App
             GetTextFromVoice();
         }
 
-        private void PlayVoiceFromText(View view)
+        private async Task PlayVoiceFromText(View view)
         {
-            tts = new TextToSpeech(this, this, "com.google.android.tts");
+            SpeechOptions options = new SpeechOptions()
+            {
+                Volume = 1,
+                Pitch = 1.0f,
+            };
 
-            lang = Java.Util.Locale.Default;
 
-            tts.SetLanguage(lang);
-            tts.SetPitch(.5f);
-            tts.SetSpeechRate(.5f);
+            await TextToSpeech.SpeakAsync(Text, options);
 
-            tts.Speak(text, QueueMode.Flush, null);
-
-            Snackbar.Make(view, text, Snackbar.LengthLong)
+            Snackbar.Make(view, Text, Snackbar.LengthLong)
                 .SetAction("Action", (View.IOnClickListener)null).Show();
         }
 
@@ -85,7 +85,7 @@ namespace Calculadora.App
             string rec = Android.Content.PM.PackageManager.FeatureMicrophone;
             if (rec != "android.hardware.microphone")
             {
-                text = "Não encontrei um microfone.";
+                Text = "Não encontrei um microfone.";
 
                 //Playback the sound
                 PlayVoiceFromText(view);
@@ -120,20 +120,31 @@ namespace Calculadora.App
             {
                 if(resultVal == Result.Ok)
                 {
+                    //TODOFD
+                    //Não sei honestamente o que fazer com esta coisa..
+                    // Vem palavra a palavra?
+                    //pesquisa isto.
                     string[] matches = data.GetStringArrayExtra(RecognizerIntent.ExtraResults);
-                    if(matches.Length != 0)
-                    {
-                        text = matches[0];
-                    }
+
+                    //desperdicio de ciclos de relogio com p ciclo em baixo
+                    //if(matches.Length != 0)
+                    //{
+                    //    text = matches[0];
+                    //}
 
                     foreach (var match in matches)
                     {
-                        text = match;
+                        Text = match;
+
+                        //Debug
+                        Wait(1000);
+                        PlayVoiceFromText(view);
+
 
                         try
                         {
                             //Compute the result
-                            text = Lib.Calculadora.Init(text);
+                            Text = Lib.Calculadora.Init(Text);
                             break;
                         }
                         catch 
@@ -143,14 +154,15 @@ namespace Calculadora.App
                     }
                 }
 
-                if (string.IsNullOrEmpty(text))
+                if (string.IsNullOrEmpty(Text))
                 {
                     //Something happened, replay generic message
-                    text = "Nenhuma operação pedida, tente outra vez.";
+                    Text = "Nenhuma operação pedida, tente outra vez.";
                 }
 
                 //Playback the sound
                 PlayVoiceFromText(view);
+                return;
             }
             base.OnActivityResult(requestCode, resultVal, data);
 
@@ -160,14 +172,6 @@ namespace Calculadora.App
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-
-        public void OnInit([GeneratedEnum] OperationResult status)
-        {
-            if (status == OperationResult.Error)
-                tts.SetLanguage(Java.Util.Locale.Default);
-            if (status == OperationResult.Success)
-                tts.SetLanguage(lang);
         }
     }
 }
