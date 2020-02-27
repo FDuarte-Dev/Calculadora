@@ -7,7 +7,7 @@
             if (string.IsNullOrEmpty(text))
                 return text;
 
-            Expression expression = TextToExpression(text);
+            Expression expression = TextToExpression(text.ToLowerInvariant());
 
             expression.Resolve();
 
