@@ -74,7 +74,8 @@ namespace Calculadora.App
             {
                 string[] matches = data.GetStringArrayExtra(RecognizerIntent.ExtraResults);
 
-                if (matches.Length > 0)
+                if (matches != null &&
+                    matches.Length > 0)
                 {
                     Text = matches[0];
 
